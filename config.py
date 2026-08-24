@@ -1,0 +1,90 @@
+import os
+from urllib.parse import quote_plus
+
+from dotenv import load_dotenv
+
+
+# ==========================================
+# CARREGA O .ENV
+# ==========================================
+
+load_dotenv()
+
+
+class Config:
+
+    # ==========================================
+    # FLASK
+    # ==========================================
+
+    SECRET_KEY = os.getenv("SECRET_KEY")
+
+
+    # ==========================================
+    # BANCO DE DADOS
+    # ==========================================
+
+    DB_USER = os.getenv("DB_USER")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "")
+    DB_HOST = os.getenv("DB_HOST")
+    DB_PORT = os.getenv("DB_PORT", "3306")
+    DB_NAME = os.getenv("DB_NAME")
+
+
+    # ==========================================
+    # VALIDAÇÃO
+    # ==========================================
+
+    if not DB_HOST:
+        raise RuntimeError(
+            "DB_HOST não encontrada no arquivo .env"
+        )
+
+    if not DB_USER:
+        raise RuntimeError(
+            "DB_USER não encontrada no arquivo .env"
+        )
+
+    if not DB_NAME:
+        raise RuntimeError(
+            "DB_NAME não encontrada no arquivo .env"
+        )
+
+
+    # ==========================================
+    # URL DO MYSQL
+    # ==========================================
+
+    DB_PASSWORD_ENCODED = quote_plus(DB_PASSWORD)
+
+    SQLALCHEMY_DATABASE_URI = (
+        f"mysql+pymysql://"
+        f"{DB_USER}:"
+        f"{DB_PASSWORD_ENCODED}@"
+        f"{DB_HOST}:"
+        f"{DB_PORT}/"
+        f"{DB_NAME}"
+    )
+
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+    # ==========================================
+    # E-MAIL
+    # ==========================================
+
+    MAIL_SERVER = "smtp.gmail.com"
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USE_SSL = False
+
+    MAIL_USERNAME = os.getenv("MAIL_USERNAME")
+    MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+    MAIL_DEFAULT_SENDER = os.getenv("MAIL_USERNAME")
+
+
+    # ==========================================
+    # UPLOADS
+    # ==========================================
+
+    UPLOAD_FOLDER = "static/arquivo_tarefa"
