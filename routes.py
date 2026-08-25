@@ -160,6 +160,16 @@ def cadastro():
                 cpf_bruto
             )
         )
+        aceitou_termos = request.form.get("aceitar_termos")
+
+        if not aceitou_termos:
+            flash(
+                "Você precisa aceitar os Termos de Uso para realizar o cadastro."
+            )
+
+            return redirect(
+                url_for("main.cadastro")
+            )
 
         # ----------------------------------------------------
         # CAMPOS OBRIGATÓRIOS
@@ -266,7 +276,22 @@ def cadastro():
         # Cria senha criptografada
         novo.criar_senha(senha)
 
+        # Adiciona o usuário
         db.session.add(novo)
+
+        # Gera o ID do usuário antes do commit
+        db.session.flush()
+
+        # Registra o aceite dos Termos de Uso
+        novo_aceite = TermosAceite(
+            id_usuario=novo.id_usuario,
+            versao=VERSAO_TERMOS,
+            ip=request.remote_addr
+        )
+
+        db.session.add(novo_aceite)
+
+        # Salva usuário + aceite
         db.session.commit()
 
         flash(
@@ -629,18 +654,11 @@ def logout():
 
 @main.route("/termos-de-uso")
 def termos_de_uso():
-
-    # Precisa estar logado
-    if "usuarios_id_usuario" not in session:
-
-        return redirect(
-            url_for("main.loguin")
-        )
-
     return render_template(
         "termos_de_uso.html",
         versao=VERSAO_TERMOS
     )
+    
 
 
 # ============================================================

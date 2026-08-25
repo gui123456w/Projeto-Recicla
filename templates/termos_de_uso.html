@@ -1,9 +1,11 @@
+<!DOCTYPE html>
+<html lang="pt-br">
 
-{% block title %}Termos de Uso{% endblock %}
-
-{% block content %}
-
-link rel="stylesheet" href="{{ url_for('static', filename='css/TermosDeUso.css') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/TermosDeUso.css') }}">
 </head>
 
 <body>
@@ -56,9 +58,12 @@ link rel="stylesheet" href="{{ url_for('static', filename='css/TermosDeUso.css')
                 que o usuário aceite novamente a nova versão.
             </p>
 
-            <button onclick="">Voltar</button>
+            <a href="{{ url_for('main.cadastro') }}">
+                Voltar
+            </a>
         </div>
     </div>
 </body>
 
 </html>
+ 
