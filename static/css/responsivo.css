@@ -16,7 +16,12 @@ button {
     box-sizing: border-box;
 }
 
-/* Botão hambúrguer escondido no computador */
+
+/* =========================================================
+   MENU - DESKTOP
+   ========================================================= */
+
+/* Esconde o botão hambúrguer no computador */
 .menu-toggle {
     display: none;
 }
@@ -41,7 +46,9 @@ button {
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
+
         gap: 15px;
+
         padding: 15px;
     }
 
@@ -52,7 +59,9 @@ button {
 
     .hero-content {
         flex-direction: column;
+
         text-align: center;
+
         gap: 30px;
     }
 
@@ -62,17 +71,21 @@ button {
 
     .hero-img {
         width: 100%;
+
         display: flex;
+
         justify-content: center;
     }
 
     .hero-img img {
         max-width: 400px;
+
         width: 80%;
     }
 
     .cards {
         grid-template-columns: repeat(2, 1fr);
+
         gap: 20px;
     }
 
@@ -83,8 +96,12 @@ button {
 
     .cards-container {
         grid-template-columns: 1fr;
+
         width: 100%;
+
         padding: 0 20px;
+
+        box-sizing: border-box;
     }
 
     .hero-body {
@@ -93,6 +110,7 @@ button {
 
     .conteudo img {
         max-width: 100%;
+
         height: auto;
     }
 
@@ -103,7 +121,9 @@ button {
 
     .conteinerLoguin {
         width: 90%;
+
         max-width: 700px;
+
         margin: auto;
     }
 
@@ -113,7 +133,9 @@ button {
 
     .linha {
         display: flex;
+
         flex-direction: column;
+
         gap: 15px;
     }
 
@@ -140,7 +162,9 @@ button {
 
     .conteinerLogin .card {
         width: 90%;
+
         max-width: 500px;
+
         margin: auto;
     }
 
@@ -159,6 +183,7 @@ button {
 
     .recuperar-card {
         width: 90%;
+
         max-width: 500px;
     }
 
@@ -181,6 +206,7 @@ button {
 
     .redefinir-card {
         width: 90%;
+
         max-width: 500px;
     }
 
@@ -203,7 +229,9 @@ button {
 
     .termos-container .card {
         width: 90%;
+
         max-width: 750px;
+
         margin: auto;
     }
 
@@ -227,12 +255,14 @@ button {
 
     .mapa-container {
         width: 95%;
+
         margin-left: auto;
         margin-right: auto;
     }
 
     #iframe-mapa {
         width: 100%;
+
         height: 400px;
     }
 
@@ -243,7 +273,9 @@ button {
 
     .modal-box {
         width: 90%;
+
         max-height: 85vh;
+
         overflow-y: auto;
     }
 }
@@ -255,100 +287,188 @@ button {
 
 @media (max-width: 600px) {
 
-    /* =========================
+    /* =====================================================
        MENU MOBILE / HAMBÚRGUER
-       ========================= */
+       ===================================================== */
 
     .menu {
         width: 100%;
+
         position: relative;
+
+        z-index: 1000;
+
+        box-sizing: border-box;
     }
 
-    /* Botão do menu */
+
+    /* =========================
+       BOTÃO HAMBÚRGUER
+       ========================= */
+
     .menu-toggle {
         display: flex;
+
         flex-direction: column;
+
         justify-content: center;
+
         align-items: center;
 
-        width: 45px;
-        height: 45px;
+        width: 46px;
+
+        height: 46px;
 
         margin-left: auto;
+
         margin-right: 15px;
 
-        background: transparent;
-        border: none;
+        background-color: #1f6b45;
+
+        border: 2px solid #ffffff;
+
+        border-radius: 10px;
+
         cursor: pointer;
 
         gap: 5px;
 
         position: relative;
+
         z-index: 1001;
+
+        padding: 0;
     }
+
 
     /* Barrinhas do hambúrguer */
     .menu-toggle span {
         display: block;
 
-        width: 27px;
+        width: 26px;
+
         height: 3px;
 
         background-color: #ffffff;
 
-        border-radius: 5px;
+        border-radius: 10px;
 
         transition:
             transform 0.3s ease,
             opacity 0.3s ease;
     }
 
-    /* Menu fechado */
+
+    /* =========================
+       MENU FECHADO
+       ========================= */
+
     .menu-links {
         display: none;
 
         flex-direction: column;
+
+        justify-content: flex-start;
+
         align-items: stretch;
 
-        width: 100%;
+        width: calc(100% - 30px);
 
-        padding: 15px;
-        gap: 8px;
+        margin: 10px 15px 0;
+
+        padding: 10px;
+
+        gap: 6px;
 
         background-color: #1f6b45;
 
+        border-radius: 12px;
+
         box-sizing: border-box;
+
+        box-shadow:
+            0 6px 18px rgba(0, 0, 0, 0.20);
     }
 
-    /* Menu aberto */
+
+    /* =========================
+       MENU ABERTO
+       ========================= */
+
     .menu-links.ativo {
         display: flex;
     }
 
-    /* Links do menu */
+
+    /* =========================
+       LINKS DO MENU
+       ========================= */
+
     .menu-links a {
         display: block;
 
         width: 100%;
 
-        padding: 12px 15px;
+        padding: 13px 15px;
+
+        color: #ffffff;
+
+        background-color: transparent;
+
+        font-weight: bold;
+
+        font-size: 0.95rem;
 
         text-align: center;
+
         text-decoration: none;
 
         box-sizing: border-box;
 
         border-radius: 8px;
+
+        transition:
+            background-color 0.2s ease,
+            color 0.2s ease,
+            transform 0.2s ease;
     }
 
+
+    /* Hover */
+    .menu-links a:hover {
+        background-color: #ffffff;
+
+        color: #1f6b45;
+    }
+
+
+    /* Clique / toque */
     .menu-links a:active {
+        background-color: #e9edc9;
+
+        color: #1f6b45;
+
         transform: scale(0.98);
     }
 
-    /* Hambúrguer vira X */
+
+    /* Acessibilidade pelo teclado */
+    .menu-links a:focus-visible,
+    .menu-toggle:focus-visible {
+        outline: 3px solid #ffffff;
+
+        outline-offset: 2px;
+    }
+
+
+    /* =========================
+       HAMBÚRGUER VIRA X
+       ========================= */
 
     .menu-toggle.ativo span:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
+        transform:
+            translateY(8px)
+            rotate(45deg);
     }
 
     .menu-toggle.ativo span:nth-child(2) {
@@ -356,7 +476,9 @@ button {
     }
 
     .menu-toggle.ativo span:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
+        transform:
+            translateY(-8px)
+            rotate(-45deg);
     }
 
 
@@ -366,11 +488,16 @@ button {
 
     .hero {
         padding-left: 15px;
+
         padding-right: 15px;
+
+        box-sizing: border-box;
     }
 
     .hero-content {
         padding: 20px 10px;
+
+        box-sizing: border-box;
     }
 
     .title {
@@ -379,11 +506,13 @@ button {
 
     .subtitle {
         font-size: 1rem;
+
         line-height: 1.5;
     }
 
     .hero-img img {
         width: 90%;
+
         max-width: 280px;
     }
 
@@ -394,6 +523,7 @@ button {
 
     .cards {
         grid-template-columns: 1fr;
+
         padding: 10px;
     }
 
@@ -408,6 +538,7 @@ button {
 
     .titulo-principal {
         font-size: 2rem;
+
         text-align: center;
     }
 
@@ -425,12 +556,16 @@ button {
 
     .conteudo {
         width: 100%;
+
         overflow-wrap: break-word;
+
+        box-sizing: border-box;
     }
 
     .conteudo p,
     .conteudo li {
         font-size: 0.95rem;
+
         line-height: 1.6;
     }
 
@@ -441,17 +576,23 @@ button {
 
     .section {
         padding-left: 15px;
+
         padding-right: 15px;
+
+        box-sizing: border-box;
     }
 
     .conteinerLoguin {
         width: 100%;
+
         padding: 20px;
+
         box-sizing: border-box;
     }
 
     .Titulo h1 {
         font-size: 1.8rem;
+
         text-align: center;
     }
 
@@ -473,6 +614,7 @@ button {
 
     .termos-aceite {
         font-size: 0.9rem;
+
         line-height: 1.5;
     }
 
@@ -483,14 +625,19 @@ button {
 
     .conteinerLogin {
         width: 100%;
+
         min-height: 100vh;
+
         padding: 15px;
+
         box-sizing: border-box;
     }
 
     .conteinerLogin .card {
         width: 100%;
+
         padding: 20px;
+
         box-sizing: border-box;
     }
 
@@ -509,14 +656,19 @@ button {
 
     .recuperar-container {
         width: 100%;
+
         min-height: 100vh;
+
         padding: 15px;
+
         box-sizing: border-box;
     }
 
     .recuperar-card {
         width: 100%;
+
         padding: 20px;
+
         box-sizing: border-box;
     }
 
@@ -539,14 +691,19 @@ button {
 
     .redefinir-container {
         width: 100%;
+
         min-height: 100vh;
+
         padding: 15px;
+
         box-sizing: border-box;
     }
 
     .redefinir-card {
         width: 100%;
+
         padding: 20px;
+
         box-sizing: border-box;
     }
 
@@ -573,7 +730,9 @@ button {
 
     .termos-container .card {
         width: 100%;
+
         padding: 20px;
+
         box-sizing: border-box;
     }
 
@@ -587,6 +746,7 @@ button {
 
     .termos-container p {
         font-size: 0.95rem;
+
         line-height: 1.6;
     }
 
@@ -597,6 +757,8 @@ button {
 
     .formulario-busca {
         padding: 10px;
+
+        box-sizing: border-box;
     }
 
     .campo-busca {
@@ -606,6 +768,7 @@ button {
     .campo-busca input,
     .campo-busca select {
         width: 100%;
+
         font-size: 16px;
     }
 
@@ -615,15 +778,21 @@ button {
 
     .mapa-container {
         width: calc(100% - 20px);
+
+        margin-left: auto;
+
+        margin-right: auto;
     }
 
     .mapa-container .titulo {
         font-size: 1.5rem;
+
         text-align: center;
     }
 
     #iframe-mapa {
         width: 100%;
+
         height: 320px;
     }
 
@@ -634,7 +803,9 @@ button {
 
     .modal-box {
         width: 95%;
+
         max-height: 85vh;
+
         overflow-y: auto;
     }
 
@@ -654,6 +825,10 @@ button {
 
 @media (max-width: 400px) {
 
+    /* =========================
+       HOME
+       ========================= */
+
     .title {
         font-size: 1.7rem;
     }
@@ -666,6 +841,11 @@ button {
         font-size: 1.7rem;
     }
 
+
+    /* =========================
+       FORMULÁRIOS / CARDS
+       ========================= */
+
     .conteinerLoguin,
     .conteinerLogin .card,
     .recuperar-card,
@@ -674,9 +854,41 @@ button {
         padding: 15px;
     }
 
+
+    /* =========================
+       MENU
+       ========================= */
+
+    .menu-toggle {
+        width: 42px;
+
+        height: 42px;
+
+        margin-right: 10px;
+    }
+
+    .menu-toggle span {
+        width: 24px;
+    }
+
+    .menu-links {
+        width: calc(100% - 20px);
+
+        margin-left: 10px;
+
+        margin-right: 10px;
+    }
+
     .menu-links a {
         font-size: 0.9rem;
+
+        padding: 12px 10px;
     }
+
+
+    /* =========================
+       MAPA
+       ========================= */
 
     #iframe-mapa {
         height: 280px;

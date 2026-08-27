@@ -278,3 +278,72 @@ document.querySelectorAll('.btn-card').forEach(btn => {
 document.getElementById('closeModal').addEventListener('click', closeModal);
 
 document.querySelector('.modal-overlay').addEventListener('click', closeModal);
+const menuToggle =
+    document.getElementById("menuToggle");
+
+const menuLinks =
+    document.getElementById("menuLinks");
+
+
+if (menuToggle && menuLinks) {
+
+    /*
+     * Abre e fecha o menu
+     */
+    menuToggle.addEventListener(
+        "click",
+        function () {
+
+            const menuAberto =
+                menuLinks.classList.toggle("ativo");
+
+
+            /*
+             * Faz o hambúrguer virar X
+             */
+            menuToggle.classList.toggle("ativo");
+
+
+            /*
+             * Acessibilidade
+             */
+            menuToggle.setAttribute(
+                "aria-expanded",
+                menuAberto
+            );
+
+        }
+    );
+
+
+    /*
+     * Fecha o menu quando clicar
+     * em algum link
+     */
+    document
+        .querySelectorAll(".menu-links a")
+        .forEach(function (link) {
+
+            link.addEventListener(
+                "click",
+                function () {
+
+                    menuLinks.classList.remove(
+                        "ativo"
+                    );
+
+                    menuToggle.classList.remove(
+                        "ativo"
+                    );
+
+                    menuToggle.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
+            );
+
+        });
+
+}

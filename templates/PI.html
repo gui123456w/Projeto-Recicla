@@ -27,26 +27,70 @@
     <section class="hero">
 
         <nav class="menu">
-            <div class="menu-links">
-                <a href="{{ url_for('main.pi') }}">Início</a>
-                <a href="{{ url_for('main.dicas') }}">Dicas Sustentáveis</a>
-                <a href="{{ url_for('main.coleta') }}">Pontos de Coletas</a>
-                <a href="{{ url_for('main.loguin') }}">Login</a>
+    
+            <!-- Botão hambúrguer - aparece somente no celular -->
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                aria-label="Abrir menu"
+                aria-expanded="false"
+                aria-controls="menuLinks"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+    
+            <div class="menu-links" id="menuLinks">
+    
+                <a href="{{ url_for('main.pi') }}">
+                    Início
+                </a>
+    
+                <a href="{{ url_for('main.dicas') }}">
+                    Dicas Sustentáveis
+                </a>
+    
+                <a href="{{ url_for('main.coleta') }}">
+                    Pontos de Coletas
+                </a>
+    
+                <a href="{{ url_for('main.loguin') }}">
+                    Login
+                </a>
+    
             </div>
+    
         </nav>
-
+    
+    
         <div class="container hero-content">
-
+    
             <div class="hero-text">
-                <h1 class="title">Sustenta+</h1>
-                <h3 class="subtitle">Transformando resíduos em novas oportunidades para um futuro sustentável!</h3>
+    
+                <h1 class="title">
+                    Sustenta+
+                </h1>
+    
+                <h3 class="subtitle">
+                    Transformando resíduos em novas oportunidades
+                    para um futuro sustentável!
+                </h3>
+    
             </div>
-
+    
+    
             <div class="hero-img">
-                <img src="{{ url_for('static', filename='img/Reciclavel (1).png') }}" alt="Reciclável">
+    
+                <img
+                    src="{{ url_for('static', filename='img/Reciclavel (1).png') }}"
+                    alt="Reciclável"
+                >
+    
             </div>
-
+    
         </div>
+    
     </section>
 
     <div class="parte1">
