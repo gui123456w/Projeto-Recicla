@@ -21,6 +21,11 @@ class Usuarios(db.Model):
 
     id_endereco = db.Column( db.Integer, db.ForeignKey("endereco.id_endereco"), nullable=True )
 
+    tipo_usuario = db.Column(
+        db.String(20),
+        nullable=False,
+        default="usuario"
+    )
     
     data_criacao = db.Column(
         db.DateTime,
@@ -151,3 +156,4 @@ class TermosAceite(db.Model):
         db.String(45),
         nullable=True
     )
+    

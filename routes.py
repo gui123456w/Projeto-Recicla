@@ -1,28 +1,15 @@
-from flask import (
-    Blueprint,
-    render_template,
-    request,
-    redirect,
-    session,
-    flash,
-    url_for
-)
-
+from flask import (Blueprint,render_template,request,redirect,session,flash,url_for)
 from datetime import datetime, timedelta
 import secrets
 
 from flask_mail import Message
 
 from database import db
-from models import (
-    Usuarios,
-    RecuperacaoSenha,
-    TermosAceite
-)
+from models import (Usuarios,RecuperacaoSenha,TermosAceite, TiposMaterial, Locais)
 
 from extensions import mail
 
-
+from functools import wraps
 main = Blueprint("main", __name__)
 
 VERSAO_TERMOS = "1.0"
@@ -340,7 +327,16 @@ def loguin():
             session["usuarios_nome"] = (
                 usuario.nome
             )
+            
+            session["tipo_usuario"] = (
+                usuario.tipo_usuario
+            )
 
+            if usuario.tipo_usuario == "admin":
+                return redirect(
+                    url_for("main.admin_dashboard")
+                )
+            
             # Vai para a página principal.
             # O before_request verificará os termos.
             return redirect(
@@ -746,3 +742,50 @@ def verificar_termos_aceitos():
 
     return aceite is not None
 
+# ============================================================
+# DASHBOARD ADMIN
+# ============================================================
+
+def admin_required(funcao):
+
+    @wraps(funcao)
+    def verificar_admin(*args, **kwargs):
+
+        # Verifica se está logado
+        if "usuarios_id_usuario" not in session:
+
+            flash("Faça login para acessar o painel.")
+
+            return redirect(
+                url_for("main.loguin")
+            )
+
+        # Verifica se realmente é ADMIN
+        if session.get("tipo_usuario") != "admin":
+
+            flash(
+                "Você não possui permissão para acessar esta página."
+            )
+
+            return redirect(
+                url_for("main.pi")
+            )
+
+        return funcao(*args, **kwargs)
+
+    return verificar_admin
+
+@main.route("/admin")
+@admin_required
+def admin_dashboard():
+
+    total_usuarios = Usuarios.query.count()
+    total_locais = Locais.query.count()
+    total_materiais = TiposMaterial.query.count()
+
+    return render_template(
+        "admin/dashboard.html",
+        total_usuarios=total_usuarios,
+        total_locais=total_locais,
+        total_materiais=total_materiais
+    )
