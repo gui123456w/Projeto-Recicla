@@ -2,9 +2,7 @@
 <html lang="pt-br">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
@@ -12,35 +10,22 @@
 
     <title>Dashboard Admin - Sustenta+</title>
 
-    <link rel="stylesheet"
-        href="{{ url_for('static', filename='css/admin.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/admin.css') }}"
+    >
 
-    <link rel="stylesheet"
-        href="{{ url_for('static', filename='css/responsivo.css') }}">
 </head>
 
 <body>
-
     <div class="admin-layout">
 
-        <!-- =========================================
-             MENU LATERAL
-             ========================================= -->
-
+        <!-- MENU LATERAL -->
         <aside class="sidebar">
-
             <div class="sidebar-topo">
-
-                <h1 class="logo">
-                    Sustenta+
-                </h1>
-
-                <p class="admin-label">
-                    Painel Administrativo
-                </p>
-
+                <h1 class="logo">Sustenta+</h1>
+                <p class="admin-label">Painel Administrativo</p>
             </div>
-
 
             <nav class="sidebar-menu">
 
@@ -50,82 +35,57 @@
                 >
                     Dashboard
                 </a>
-
-                <a href="#">
+            
+                <a href="{{ url_for('main.admin_usuarios') }}">
                     Usuários
                 </a>
-
-                <a href="#">
+            
+                <a href="{{ url_for('main.admin_pontos_coleta') }}">
                     Pontos de Coleta
                 </a>
-
-                <a href="#">
+            
+                <a href="{{ url_for('main.admin_materiais') }}">
                     Materiais
                 </a>
-
+            
                 <a href="{{ url_for('main.pi') }}">
                     Ver site
                 </a>
-
+            
                 <a
                     href="{{ url_for('main.logout') }}"
                     class="sair"
                 >
                     Sair
                 </a>
-
+            
             </nav>
-
         </aside>
 
-
-        <!-- =========================================
-             CONTEÚDO PRINCIPAL
-             ========================================= -->
-
+        <!-- CONTEÚDO PRINCIPAL -->
         <main class="admin-main">
 
-            <!-- CABEÇALHO -->
             <header class="admin-header">
-
                 <div>
-
-                    <h2>
-                        Dashboard
-                    </h2>
-
+                    <h2>Dashboard</h2>
                     <p>
                         Bem-vindo ao painel administrativo do Sustenta+.
                     </p>
-
                 </div>
 
-
                 <div class="admin-usuario">
-
-                    <span>
-                        Olá,
-                    </span>
-
+                    <span>Olá,</span>
                     <strong>
                         {{ session.get('usuarios_nome', 'Administrador') }}
                     </strong>
-
                 </div>
-
             </header>
 
-
-            <!-- =========================================
-                 CARDS
-                 ========================================= -->
-
+            <!-- CARDS -->
             <section class="dashboard-cards">
 
                 <div class="dashboard-card">
-
                     <div class="card-info">
-
                         <span class="card-titulo">
                             Usuários cadastrados
                         </span>
@@ -133,16 +93,11 @@
                         <strong class="card-numero">
                             {{ total_usuarios | default(0) }}
                         </strong>
-
                     </div>
-
                 </div>
 
-
                 <div class="dashboard-card">
-
                     <div class="card-info">
-
                         <span class="card-titulo">
                             Pontos de coleta
                         </span>
@@ -150,16 +105,11 @@
                         <strong class="card-numero">
                             {{ total_locais | default(0) }}
                         </strong>
-
                     </div>
-
                 </div>
 
-
                 <div class="dashboard-card">
-
                     <div class="card-info">
-
                         <span class="card-titulo">
                             Tipos de materiais
                         </span>
@@ -167,100 +117,52 @@
                         <strong class="card-numero">
                             {{ total_materiais | default(0) }}
                         </strong>
-
                     </div>
-
                 </div>
 
             </section>
 
-
-            <!-- =========================================
-                 AÇÕES RÁPIDAS
-                 ========================================= -->
-
+            <!-- AÇÕES RÁPIDAS -->
             <section class="admin-section">
 
                 <div class="section-header">
-
-                    <h3>
-                        Ações rápidas
-                    </h3>
-
+                    <h3>Ações rápidas</h3>
                 </div>
-
 
                 <div class="acoes-grid">
 
-                    <a
-                        href="#"
-                        class="acao-card"
-                    >
-
-                        <h4>
-                            Gerenciar usuários
-                        </h4>
-
+                    <a href="#" class="acao-card">
+                        <h4>Gerenciar usuários</h4>
                         <p>
                             Visualize e administre os usuários cadastrados.
                         </p>
-
                     </a>
 
-
-                    <a
-                        href="#"
-                        class="acao-card"
-                    >
-
-                        <h4>
-                            Gerenciar pontos de coleta
-                        </h4>
-
+                    <a href="#" class="acao-card">
+                        <h4>Gerenciar pontos de coleta</h4>
                         <p>
                             Cadastre, edite ou remova pontos de coleta.
                         </p>
-
                     </a>
 
-
-                    <a
-                        href="#"
-                        class="acao-card"
-                    >
-
-                        <h4>
-                            Gerenciar materiais
-                        </h4>
-
+                    <a href="#" class="acao-card">
+                        <h4>Gerenciar materiais</h4>
                         <p>
                             Administre os tipos de materiais recicláveis.
                         </p>
-
                     </a>
 
                 </div>
-
             </section>
 
-
-            <!-- =========================================
-                 INFORMAÇÕES
-                 ========================================= -->
-
+            <!-- VISÃO GERAL -->
             <section class="admin-section">
 
                 <div class="section-header">
-
-                    <h3>
-                        Visão geral
-                    </h3>
-
+                    <h3>Visão geral</h3>
                 </div>
 
-
                 <div class="info-box">
-
                     <p>
                         O painel administrativo permite controlar
                         as principais informações do Sustenta+.
@@ -271,15 +173,12 @@
                         edição e exclusão de usuários, pontos de coleta
                         e tipos de materiais.
                     </p>
-
                 </div>
 
             </section>
 
         </main>
-
     </div>
-
 </body>
 
 </html>
