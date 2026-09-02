@@ -1,4 +1,4 @@
-from flask import (Blueprint,render_template,request,redirect,session,flash,url_for)
+from flask import (Blueprint, render_template, request, redirect, session, flash, url_for, current_app)
 from datetime import datetime, timedelta
 import secrets
 
@@ -10,6 +10,7 @@ from models import (Usuarios,RecuperacaoSenha,TermosAceite, TiposMaterial, Locai
 from extensions import mail
 
 from functools import wraps
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 main = Blueprint("main", __name__)
 
 VERSAO_TERMOS = "1.0"
@@ -113,185 +114,80 @@ def coleta():
 
 @main.route("/cadastro", methods=["GET", "POST"])
 def cadastro():
+    if request.method == "GET":
+        return render_template("cadastro.html")
 
-    if request.method == "POST":
+    nome = request.form.get("nome", "").strip()
+    email = request.form.get("email", "").strip().lower()
+    senha = request.form.get("senha", "")
+    confirmar_senha = request.form.get("confirmar_senha", "")
+    cpf_bruto = request.form.get("cpf", "").strip()
+    cpf = "".join(filter(str.isdigit, cpf_bruto))
+    aceitou_termos = request.form.get("aceitar_termos")
 
-        nome = request.form.get(
-            "nome",
-            ""
-        ).strip()
+    if not aceitou_termos:
+        flash("Você precisa aceitar os Termos de Uso para realizar o cadastro.")
+        return redirect(url_for("main.cadastro"))
 
-        email = request.form.get(
-            "email",
-            ""
-        ).strip().lower()
+    if not nome or not email or not senha or not confirmar_senha or not cpf:
+        flash("Preencha todos os campos.")
+        return redirect(url_for("main.cadastro"))
 
-        senha = request.form.get(
-            "senha",
-            ""
-        )
+    if senha != confirmar_senha:
+        flash("As senhas não conferem.")
+        return redirect(url_for("main.cadastro"))
 
-        confirmar_senha = request.form.get(
-            "confirmar_senha",
-            ""
-        )
+    if len(senha) < 8:
+        flash("A senha deve possuir pelo menos 8 caracteres.")
+        return redirect(url_for("main.cadastro"))
 
-        cpf_bruto = request.form.get(
-            "cpf",
-            ""
-        ).strip()
+    if len(cpf) != 11:
+        flash("CPF inválido. Digite 11 números.")
+        return redirect(url_for("main.cadastro"))
 
-        cpf = "".join(
-            filter(
-                str.isdigit,
-                cpf_bruto
-            )
-        )
-        aceitou_termos = request.form.get("aceitar_termos")
+    try:
+        if Usuarios.query.filter_by(email=email).first():
+            flash("Este email já está cadastrado.")
+            return redirect(url_for("main.cadastro"))
 
-        if not aceitou_termos:
-            flash(
-                "Você precisa aceitar os Termos de Uso para realizar o cadastro."
-            )
+        if Usuarios.query.filter_by(cpf=cpf).first():
+            flash("Este CPF já está cadastrado.")
+            return redirect(url_for("main.cadastro"))
 
-            return redirect(
-                url_for("main.cadastro")
-            )
-
-        # ----------------------------------------------------
-        # CAMPOS OBRIGATÓRIOS
-        # ----------------------------------------------------
-
-        if not nome or not email or not senha or not cpf:
-
-            flash(
-                "Preencha todos os campos."
-            )
-
-            return redirect(
-                url_for("main.cadastro")
-            )
-
-        # ----------------------------------------------------
-        # CONFIRMAÇÃO DA SENHA
-        # ----------------------------------------------------
-
-        if senha != confirmar_senha:
-
-            flash(
-                "As senhas não conferem."
-            )
-
-            return redirect(
-                url_for("main.cadastro")
-            )
-
-        # ----------------------------------------------------
-        # TAMANHO DA SENHA
-        # ----------------------------------------------------
-
-        if len(senha) < 8:
-
-            flash(
-                "A senha deve possuir pelo menos 8 caracteres."
-            )
-
-            return redirect(
-                url_for("main.cadastro")
-            )
-
-        # ----------------------------------------------------
-        # CPF
-        # ----------------------------------------------------
-
-        if len(cpf) != 11:
-
-            flash(
-                "CPF inválido. Digite 11 números."
-            )
-
-            return redirect(
-                url_for("main.cadastro")
-            )
-
-        # ----------------------------------------------------
-        # EMAIL DUPLICADO
-        # ----------------------------------------------------
-
-        usuario_email = Usuarios.query.filter_by(
-            email=email
-        ).first()
-
-        if usuario_email:
-
-            flash(
-                "Este email já está cadastrado."
-            )
-
-            return redirect(
-                url_for("main.cadastro")
-            )
-
-        # ----------------------------------------------------
-        # CPF DUPLICADO
-        # ----------------------------------------------------
-
-        usuario_cpf = Usuarios.query.filter_by(
-            cpf=cpf
-        ).first()
-
-        if usuario_cpf:
-
-            flash(
-                "Este CPF já está cadastrado."
-            )
-
-            return redirect(
-                url_for("main.cadastro")
-            )
-
-        # ----------------------------------------------------
-        # CRIA USUÁRIO
-        # ----------------------------------------------------
-
-        novo = Usuarios(
-            nome=nome,
-            email=email,
-            cpf=cpf
-        )
-
-        # Cria senha criptografada
+        novo = Usuarios(nome=nome, email=email, cpf=cpf)
         novo.criar_senha(senha)
 
-        # Adiciona o usuário
         db.session.add(novo)
-
-        # Gera o ID do usuário antes do commit
         db.session.flush()
 
-        # Registra o aceite dos Termos de Uso
         novo_aceite = TermosAceite(
             id_usuario=novo.id_usuario,
             versao=VERSAO_TERMOS,
             ip=request.remote_addr
         )
-
         db.session.add(novo_aceite)
-
-        # Salva usuário + aceite
         db.session.commit()
 
-        flash(
-            "Cadastro realizado com sucesso."
-        )
+    except IntegrityError:
+        db.session.rollback()
+        current_app.logger.exception("Erro de integridade ao cadastrar usuário.")
+        flash("Não foi possível realizar o cadastro. Email ou CPF podem já estar cadastrados.")
+        return redirect(url_for("main.cadastro"))
 
-        return redirect(
-            url_for("main.loguin")
-        )
+    except SQLAlchemyError:
+        db.session.rollback()
+        current_app.logger.exception("Erro de banco de dados ao cadastrar usuário.")
+        flash("Não foi possível realizar o cadastro no momento. Tente novamente.")
+        return redirect(url_for("main.cadastro"))
 
-    return render_template(
-        "cadastro.html"
-    )
+    except Exception:
+        db.session.rollback()
+        current_app.logger.exception("Erro inesperado ao cadastrar usuário.")
+        flash("Ocorreu um erro inesperado ao realizar o cadastro.")
+        return redirect(url_for("main.cadastro"))
+
+    flash("Cadastro realizado com sucesso.")
+    return redirect(url_for("main.loguin"))
 
 
 # ============================================================
